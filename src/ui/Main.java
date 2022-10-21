@@ -30,7 +30,7 @@ public class Main{
 		int option = 0; 
 		System.out.println("<<<<< Welcome to Real State >>>>>");
 		System.out.println(
-				"1. Add Person\n" +
+				"1. \n" +
 				"0. Exit. ");
 		option = reader.nextInt(); 
 
@@ -42,6 +42,10 @@ public class Main{
 	}
 
 	public void executeOption(int option){
+
+
+		
+
 		switch(option){
 			case 1:
 				break;
