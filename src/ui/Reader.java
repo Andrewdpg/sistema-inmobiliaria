@@ -7,15 +7,27 @@ public class Reader {
     public static final Scanner reader = new Scanner(System.in);
 
     public static int readValidInt() {
-		int option = -1;
+		int value = -1;
 
 		if (reader.hasNextInt()) {
-			option = reader.nextInt();
+			value = reader.nextInt();
 		} else {
 			reader.next();
 		}
 
-		return option;
+		return value;
+	}
+
+	public static double readValidDouble() {
+		double value = -1;
+
+		if (reader.hasNextDouble()) {
+			value = reader.nextDouble();
+		} else {
+			reader.next();
+		}
+
+		return value;
 	}
 
     public static String readString(){

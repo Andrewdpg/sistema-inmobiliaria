@@ -6,7 +6,7 @@ public class Owner extends Person{
 	private String bankName;
 
 	
-	public Owner(model.IdType idType, String id, String name, String phone, model.PhoneType phoneType,
+	public Owner(IdType idType, String id, String name, String phone, PhoneType phoneType,
 			String bankAccount, String bankName) {
 		super(idType, id, name, phone, phoneType);
 		this.bankAccount = bankAccount;
