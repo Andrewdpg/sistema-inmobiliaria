@@ -191,7 +191,7 @@ public class Main {
 				System.out.print("What is the building's name? ");
 				name = Reader.readString();
 
-				message = controller.countApartmentsOf(name);
+				message = controller.countAvailableApartmentsOf(name);
 				break;
 
 			case 8:
@@ -216,12 +216,14 @@ public class Main {
 				personId = Reader.readString();
 
 				message = controller.totalRentedApartmentsBy(personId);
+				break;
 			case 11:
 
 				System.out.print("What is the owners's id? ");
 				personId = Reader.readString();
 
 				message = controller.totalPaymentFor(personId);
+				break;
 			default:
 				message = "Invalid option.";
 				break;

@@ -12,13 +12,16 @@ public class Controller {
 	}
 
 	public String addBuilding(String name, String address, int qApartments) {
-		String msg = "Oops, looks like there is no space left for another building.";
-		Building newBuilding = new Building(name, address, qApartments);
-		for (int i = 0; i < buildings.length; i++) {
-			if (buildings[i] == null) {
-				buildings[i] = newBuilding;
-				msg = "Building successfully added.";
-				i = TOTAL_BUILDINGS;
+		String msg = "Building already exist.";
+		if (searchBuildingPositionByName(name) == -1) {
+			msg = "Oops, looks like there is no space left for another building.";
+			Building newBuilding = new Building(name, address, qApartments);
+			for (int i = 0; i < buildings.length; i++) {
+				if (buildings[i] == null) {
+					buildings[i] = newBuilding;
+					msg = "Building successfully added.";
+					i = TOTAL_BUILDINGS;
+				}
 			}
 		}
 		return msg;
@@ -79,12 +82,16 @@ public class Controller {
 		int personPos = searchPersonPositionById(personId);
 
 		if (personPos != -1) {
-			msg = "Building not found.";
-			int buildingPos = searchBuildingPositionByName(name);
+			msg = "Opps, this person doesn't seems like an owner.";
+			if (persons[personPos].getClass() == Owner.class) {
+				msg = "Building not found.";
+				int buildingPos = searchBuildingPositionByName(name);
 
-			if (buildingPos != -1) {
-				msg = buildings[buildingPos].setOwnerOf(id, personId);
+				if (buildingPos != -1) {
+					msg = buildings[buildingPos].setOwnerOf(id, personId);
+				}
 			}
+
 		}
 		return msg;
 	}
@@ -104,7 +111,7 @@ public class Controller {
 		return msg;
 	}
 
-	public String countApartmentsOf(String name) {
+	public String countAvailableApartmentsOf(String name) {
 		String msg = "Building not found";
 		int position = searchBuildingPositionByName(name);
 
@@ -196,15 +203,18 @@ public class Controller {
 
 	public String totalPaymentFor(String personId) {
 		String msg = "Person not found.";
-
-		if (searchPersonPositionById(personId) != -1) {
-			double total = 0;
-			for (int i = 0; i < buildings.length; i++) {
-				if (buildings[i] != null) {
-					total += buildings[i].paymentFor(personId);
+		int position = searchPersonPositionById(personId);
+		if (position != -1) {
+			msg = "Opps, this person doesn't seems like an owner.";
+			if (persons[position].getClass() == Owner.class) {
+				double total = 0;
+				for (int i = 0; i < buildings.length; i++) {
+					if (buildings[i] != null) {
+						total += buildings[i].paymentFor(personId);
+					}
 				}
+				msg = "Total value received: " + total * 0.9;
 			}
-			msg = "Total rented apartments: " + total * 0.9;
 		}
 		return msg;
 	}

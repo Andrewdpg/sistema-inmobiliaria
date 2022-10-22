@@ -30,11 +30,15 @@ public class Building {
 	}
 
 	public String addApartment(Apartment newApartment) {
-		String msg = "Oops, looks like there is no space left for another apartment in this building.";
-		for (int i = 0; i < apartments.length; i++) {
-			if (apartments[i] == null) {
-				apartments[i] = newApartment;
-				msg = "Apartment successfully added.";
+		String msg = "Apartment already exist in this building.";
+		if (searchApartmentPositionById(newApartment.getId()) == -1) {
+			msg = "Oops, looks like there is no space left for another apartment in this building.";
+			for (int i = 0; i < apartments.length; i++) {
+				if (apartments[i] == null) {
+					apartments[i] = newApartment;
+					msg = "Apartment successfully added.";
+					i = apartments.length;
+				}
 			}
 		}
 		return msg;
@@ -44,7 +48,7 @@ public class Building {
 		int position = -1;
 		for (int i = 0; i < apartments.length && position == -1; i++) {
 			if (apartments[i] != null) {
-				if (apartments[i].getId().equals(name)) {
+				if (apartments[i].getId().equals(id)) {
 					position = i;
 				}
 			}
@@ -56,7 +60,7 @@ public class Building {
 		String msg = "Apartment not found.";
 		int position = searchApartmentPositionById(id);
 		if (position != -1) {
-			apartments[position].setOwnerId(id);
+			apartments[position].setOwnerId(personId);
 			msg = "Owner of " + this.name + "-" + apartments[position].getId() + " successfully changed";
 		}
 		return msg;
@@ -66,7 +70,7 @@ public class Building {
 		String msg = "Apartment not found.";
 		int position = searchApartmentPositionById(id);
 		if (position != -1) {
-			apartments[position].setOwnerId(id);
+			apartments[position].setTenantId(personId);
 			msg = "Tenant of " + this.name + "-" + apartments[position].getId() + " successfully changed";
 		}
 		return msg;
@@ -76,7 +80,7 @@ public class Building {
 		int count = 0;
 		for (int i = 0; i < apartments.length; i++) {
 			if (apartments[i] != null) {
-				if (apartments[i].getId() == null) {
+				if (apartments[i].getTenantId() == null) {
 					count++;
 				}
 			}
@@ -101,7 +105,7 @@ public class Building {
 		String msg = "Apartment not found.";
 		int position = searchApartmentPositionById(id);
 		if (position != -1) {
-			msg = "The selected apartmens seems to be"
+			msg = "The selected apartmens seems to be "
 					+ (apartments[position].getTenantId() != null ? "taken." : "free.");
 		}
 		return msg;
@@ -112,7 +116,7 @@ public class Building {
 		int count = 0;
 		for (int i = 0; i < apartments.length; i++) {
 			if (apartments[i] != null) {
-				if (apartments[i].getTenantId().equals(personId)) {
+				if (personId.equals(apartments[i].getTenantId())) {
 					count++;
 				}
 			}
@@ -120,17 +124,16 @@ public class Building {
 		return count;
 	}
 
-    public double paymentFor(String personId) {
+	public double paymentFor(String personId) {
 		double total = 0;
-
 		for (int i = 0; i < apartments.length; i++) {
-			if(apartments[i] !=null){
-				if(apartments[i].getOwnerId().equals(personId)){
-					total+=apartments[i].getMonthlyCost();
+			if (apartments[i] != null) {
+				if (personId.equals(apartments[i].getOwnerId())) {
+					total += apartments[i].getMonthlyCost();
 				}
 			}
 		}
-        return total;
-    }
+		return total;
+	}
 
 }
